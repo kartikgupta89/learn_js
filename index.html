@@ -36,8 +36,6 @@
         const inputDescEl = document.querySelector("#inputDesc");
         const outputTableEl = document.querySelector("#outputTable");
 
-        let data1Output = " ";
-
         function addExpense() {
             let expenseItem = {};
             const expense = parseInt(document.querySelector("#inputAmount").value, 10);
@@ -54,25 +52,15 @@
             console.clear();
             console.table(allExpenses);
 
-            let outputArray = [];
-            for (let i = 0; i < allExpenses.length; i++) {
-                let data = allExpenses[i];
-                console.log(data);
-                outputArray.push(`<div>${data.desc} :: ${data.amount}<div>`);
-                // let dataText = `${data1.desc} :: ${data1.amount}`;
-                // let dataOutput = `${data1Output}` + `${data1Text} <br>`;
-                // // outputTableEl.innerHTML = data1Text;
-            }
-            // const data1 = allExpense[0];
-            // const data1Text = `${data1.desc} :: ${data1.amount}`;
-            // outputTableEl.innerHTML = outputArray;
-            // console.log(outputArray);
+            const outputArray = allExpenses.map(expense => {
+                return `<div> ${expense.desc} :: ${expense.amount} </div>`
+            });
+
             const joinedOutputArray = outputArray.join("");
             console.log(joinedOutputArray);
             outputTableEl.innerHTML = joinedOutputArray;
-
         }
-
+        
         const element = document.querySelector("#btnCounter");
         element.addEventListener("click", addExpense, false);
     </script>
