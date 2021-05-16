@@ -7,25 +7,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Practice JS</title>
     <link rel="shortcut icon" href="#">
-
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 50vh;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
 
 </head>
 
 <body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <span class="navbar-brand mb-0 h1">Xpense Tracker</span>
+    </nav>
+
     <h1 id="headingTotal"></h1>
-    <button id="btnCounter">+</button>
-    <a>...</a>
-    <input id="inputAmount" type="text">
-    <input id="inputDesc" type="text">
+
+    <div class="container-fluid bg-light" style="min-height: 100vh">
+
+        <div class="container">
+            <div class="jumbotron mt-4">
+
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="inputAmount" placeholder="Amount spent" aria-label="Amount spent" aria-describedby="spent in rupee">
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="spent in rupee">₹</span>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="spent at">@</span>
+                    </div>
+                    <input type="text" class="form-control" id="inputDesc" placeholder="spent on" aria-label="spent on" aria-describedby="spent at" />
+                    <div class="input-group-append">
+                        <button id="btnCounter" class="btn btn-outline-primary" type="button" id="button-addon2">Add</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="d-flex flex-column">
+                            Tshirt
+                            <small class="text-muted">March 11, 2019</small>
+                        </div>
+                        <div>
+                            <span class="px-5">
+                                500
+                            </span>
+                            <button type="button" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="d-flex flex-column">
+                            Movie
+                            <small class="text-muted">Feb 12, 2020</small>
+                        </div>
+                        <div>
+                            <span class="px-5">
+                                1500
+                            </span>
+                            <button type="button" class="btn btn-outline-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div id="outputTable"></div>
 
     <script>
@@ -53,14 +105,14 @@
             console.table(allExpenses);
 
             const outputArray = allExpenses.map(expense => {
-                return `<div> ${expense.desc} :: ${expense.amount} </div>`
+                return `<div> ${expense.desc} :: ${expense.amount} </div>`;
             });
 
             const joinedOutputArray = outputArray.join("");
             console.log(joinedOutputArray);
             outputTableEl.innerHTML = joinedOutputArray;
         }
-        
+
         const element = document.querySelector("#btnCounter");
         element.addEventListener("click", addExpense, false);
     </script>
