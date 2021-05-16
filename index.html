@@ -26,11 +26,10 @@
 
     <nav class="navbar navbar-dark bg-dark">
         <span class="navbar-brand mb-0 h1">Xpense Tracker</span>
+        <span class="navbar-brand mb-0 h1" id="headingTotal"></span>
     </nav>
 
-    <h1 id="headingTotal"></h1>
-
-    <div class="container-fluid bg-light" style="min-height: 100vh">
+    <div class="container-fluid bg-light" style="min-height: 100vh;">
         <div class="container">
 
             <div class="jumbotron mt-4">
@@ -68,7 +67,7 @@
         let totalExpense = 0;
         const totalExpenseEl = document.querySelector("#headingTotal");
         totalExpenseEl.textContent = `Total Expense: ${totalExpense}`;
-        const allExpenses = [];
+        let allExpenses = [];
         const inputDescEl = document.querySelector("#inputDesc");
         const outputTableEl = document.querySelector("#outputTable");
 
@@ -81,39 +80,73 @@
 
             expenseItem = {
                 desc: inputDescEl.value,
-                amount: expense
+                amount: expense,
+                moment: new Date()
             };
 
             allExpenses.push(expenseItem);
             console.clear();
             console.table(allExpenses);
 
-            const outputArray = allExpenses.map(expense => createListArray(expense));
-
-            const joinedOutputArray = outputArray.join("");
-            console.log(joinedOutputArray);
-            outputTableEl.innerHTML = joinedOutputArray;
+            renderList(allExpenses);
         }
 
         const element = document.querySelector("#btnCounter");
         element.addEventListener("click", addExpense, false);
 
-        function createListArray({ desc, amount }) {
+        function getDate(moment) {
+            return moment.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        function createListArray({ desc, amount, moment }) {
             return `
                 <li class="list-group-item d-flex justify-content-between">
                     <div class="d-flex flex-column">
                         ${desc}
-                        <small class="text-muted">March 11, 2019</small>
+                        <small class="text-muted">${getDate(moment)}</small>
                     </div>
                     <div>
                         <span class="px-5">
                             ${amount}
                         </span>
-                        <button type="button" class="btn btn-outline-danger btn-sm">
+                        <button 
+                            type="button" 
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="deleteItem(${moment.valueOf()}, ${amount})"
+                            >
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
                 </li>`;
+        }
+
+        function deleteItem(dateValue, amount) {
+            const newArr = [];
+            for (let i=0; i < allExpenses.length; i++) {
+                if (allExpenses[i].moment.valueOf() !== dateValue) {
+                    newArr.push(allExpenses[i]);
+                }
+            }
+            
+            totalExpense -= amount;
+            totalExpenseEl.textContent = `Total Expense: ${totalExpense}`;
+
+            allExpenses = [];
+            for (let i=0; i < newArr.length; i++) {
+                allExpenses[i] = newArr[i];
+            }
+
+            renderList(allExpenses);
+        }
+
+        function renderList(arrayList) {
+            const outputArray = arrayList.map(expense => createListArray(expense));
+            const joinedOutputArray = outputArray.join("");
+            outputTableEl.innerHTML = joinedOutputArray;
         }
 
     </script>
